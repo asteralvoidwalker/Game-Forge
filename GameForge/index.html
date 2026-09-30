@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#08090d">
+    <title>GameForge — 2D Game Generator</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">
+                <img src="icons/game.svg" alt="GameForge">
+            </div>
+            <div>
+                <h1>GameForge</h1>
+                <span>2D Game Generator</span>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <button class="nav-item active" data-section="generator">
+                <span>⚡</span>
+                Generator
+            </button>
+
+            <button class="nav-item" data-section="games">
+                <span>🎮</span>
+                My Games
+            </button>
+
+            <button class="nav-item" data-section="settings">
+                <span>⚙️</span>
+                Settings
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="status">
+                <span class="status-dot"></span>
+                Generator Online
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">AI GAME CREATOR</p>
+                <h2 id="pageTitle">Create your game</h2>
+            </div>
+
+            <button class="icon-button" id="themeButton" title="Toggle theme">
+                ☼
+            </button>
+        </header>
+
+        <!-- GENERATOR SECTION -->
+        <section class="section active" id="generatorSection">
+
+            <div class="hero">
+                <div class="hero-badge">
+                    <span>✦</span>
+                    Build playable games with one prompt
+                </div>
+
+                <h3>
+                    Turn your idea into a
+                    <span>2D game.</span>
+                </h3>
+
+                <p>
+                    Describe the game you want to create and GameForge
+                    will turn your idea into a playable browser game.
+                </p>
+            </div>
+
+            <!-- PROMPT -->
+            <div class="generator-card">
+
+                <div class="card-header">
+                    <div>
+                        <span class="card-label">GAME DESCRIPTION</span>
+                        <h4>What do you want to build?</h4>
+                    </div>
+
+                    <span class="shortcut">CTRL + ENTER</span>
+                </div>
+
+                <textarea
+                    id="gamePrompt"
+                    placeholder="Example: Make a space shooter where I control a spaceship, destroy enemies and collect points..."
+                    maxlength="1000"
+                ></textarea>
+
+                <div class="prompt-footer">
+                    <div class="suggestions">
+                        <button class="suggestion" data-prompt="Create a space shooter where I control a spaceship and destroy enemy ships.">
+                            🚀 Space Shooter
+                        </button>
+
+                        <button class="suggestion" data-prompt="Create a platformer where the player jumps across platforms and collects coins.">
+                            🏃 Platformer
+                        </button>
+
+                        <button class="suggestion" data-prompt="Create a Snake game where I control a snake and collect food to grow.">
+                            🐍 Snake
+                        </button>
+
+                        <button class="suggestion" data-prompt="Create a Breakout game where I destroy blocks with a bouncing ball.">
+                            🧱 Breakout
+                        </button>
+                    </div>
+
+                    <span id="charCount">0 / 1000</span>
+                </div>
+
+                <button class="generate-button" id="generateButton">
+                    <img src="icons/generate.svg" alt="">
+                    <span>Generate Game</span>
+                    <kbd>CTRL ↵</kbd>
+                </button>
+
+            </div>
+
+            <!-- PREVIEW -->
+            <div class="workspace">
+
+                <div class="workspace-header">
+                    <div>
+                        <span class="card-label">LIVE PREVIEW</span>
+                        <h4 id="gameTitle">Your game will appear here</h4>
+                    </div>
+
+                    <div class="preview-actions">
+                        <button id="restartButton" disabled>↻ Restart</button>
+                        <button id="fullscreenButton" disabled>⛶ Fullscreen</button>
+                    </div>
+                </div>
+
+                <div class="game-container" id="gameContainer">
+
+                    <div class="empty-preview" id="emptyPreview">
+                        <div class="empty-icon">🎮</div>
+                        <h4>No game generated yet</h4>
+                        <p>Describe your game above and press Generate Game.</p>
+                    </div>
+
+                    <canvas id="gameCanvas" width="900" height="500"></canvas>
+
+                    <div class="game-overlay" id="gameOverlay">
+                        <div class="overlay-content">
+                            <div class="overlay-icon">✦</div>
+                            <h3 id="overlayTitle">Game Over</h3>
+                            <p id="overlayMessage">Press restart to play again.</p>
+                            <button id="overlayButton">Restart Game</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="game-controls">
+                    <span>⌨️ Keyboard controls</span>
+                    <span id="controlsText">Generate a game to see controls</span>
+                </div>
+
+            </div>
+
+            <!-- CODE -->
+            <div class="code-panel">
+
+                <div class="code-header">
+                    <div>
+                        <span class="card-label">GENERATED CODE</span>
+                        <h4>Game source</h4>
+                    </div>
+
+                    <button id="downloadButton" disabled>
+                        ↓ Download
+                    </button>
+                </div>
+
+                <div class="code-window">
+                    <div class="code-tabs">
+                        <button class="code-tab active">JavaScript</button>
+                    </div>
+
+                    <pre><code id="codeOutput">// Your generated game code will appear here.</code></pre>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- MY GAMES -->
+        <section class="section" id="gamesSection">
+
+            <div class="section-heading">
+                <span class="card-label">LIBRARY</span>
+                <h3>My Games</h3>
+                <p>Your generated games will appear here.</p>
+            </div>
+
+            <div class="games-grid" id="gamesGrid">
+                <div class="no-games">
+                    <div>🎮</div>
+                    <h4>No games yet</h4>
+                    <p>Generate your first game to see it here.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="section" id="settingsSection">
+
+            <div class="section-heading">
+                <span class="card-label">PREFERENCES</span>
+                <h3>Settings</h3>
+                <p>Customize your GameForge experience.</p>
+            </div>
+
+            <div class="settings-card">
+
+                <div class="setting-row">
+                    <div>
+                        <h4>Animations</h4>
+                        <p>Enable interface animations.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="animationsToggle" checked>
+                        <span></span>
+                    </label>
+                </div>
+
+                <div class="setting-row">
+                    <div>
+                        <h4>Auto-start games</h4>
+                        <p>Automatically start generated games.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="autoStartToggle" checked>
+                        <span></span>
+                    </label>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
